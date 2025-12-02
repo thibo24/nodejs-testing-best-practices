@@ -1,3 +1,11 @@
+name: Node.js CI
+
+# 1. 'on' est à la racine, pas dans 'jobs'
+on:
+  push:
+    branches:
+      - master
+
 jobs:
   # Job 1 : Les tests unitaires classiques
   unit-tests:
@@ -7,11 +15,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-          cache: 'npm' # Raccourci pratique pour gérer le cache automatiquement
+          cache: 'npm' # Remplace le long bloc "Cache node_modules" précédent
       - run: npm ci
       - run: npm test
 
-  # Job 2 : Les tests NestJS (tourne en même temps que le job 1)
+  # Job 2 : Les tests NestJS (tourne en parallèle du Job 1)
   nestjs-tests:
     runs-on: ubuntu-latest
     steps:
